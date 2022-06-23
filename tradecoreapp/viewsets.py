@@ -3,6 +3,7 @@ from .models import Post
 from rest_framework import status
 from .services import PostManager
 from rest_framework import viewsets
+from .docs import response_examples
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from drf_yasg.utils import swagger_auto_schema
@@ -15,12 +16,13 @@ class PostViewSet(viewsets.ViewSet):
     Viewset for Post CRUD
     """
 
-    permission_classes = (IsAuthenticated, CanPerformActionOnPost)
+    permission_classes = [CanPerformActionOnPost]
 
     @swagger_auto_schema(
         operation_description="List out all posts",
         operation_summary="List posts",
         tags=["posts"],
+        responses=response_examples.LIST_POST
     )
     def list(self, request):
         posts = PostManager.list_all_post()
@@ -29,7 +31,8 @@ class PostViewSet(viewsets.ViewSet):
     @swagger_auto_schema(
         operation_description="Create a posts",
         operation_summary="Create a posts",
-        tags=["posts"]
+        tags=["posts"],
+        responses=response_examples.CREATE_POST
     )
     def create(self, request):
         serializer = PostCreateSerializer(data=request.data)
@@ -42,6 +45,7 @@ class PostViewSet(viewsets.ViewSet):
         operation_description="Get a single post",
         operation_summary="Get post",
         tags=["posts"],
+        responses=response_examples.GET_SINGLE_POST
     )
     def retrieve(self, request, pk=None):
         post = PostManager.retrieve_single_post(pk)
@@ -73,7 +77,8 @@ class PostViewSet(viewsets.ViewSet):
     @swagger_auto_schema(
         operation_description="Like a single post",
         operation_summary="Like post",
-        tags=["posts"]
+        tags=["posts"],
+        responses=response_examples.LIKE_SINGLE_POST
     )
     @action(detail=True, methods=['patch'], url_path="like_post")
     def like_post(self, request, pk):
@@ -84,7 +89,8 @@ class PostViewSet(viewsets.ViewSet):
     @swagger_auto_schema(
         operation_description="Unlike a single post",
         operation_summary="Unlike post",
-        tags=["posts"]
+        tags=["posts"],
+        responses=response_examples.UNLIKE_SINGLE_POST
     )
     @action(detail=True, methods=['patch'], url_path="unlike_post")
     def unlike_post(self, request, pk):

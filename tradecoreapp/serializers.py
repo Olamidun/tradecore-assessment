@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 
 class PostCreateSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     content = serializers.CharField(required=True)
     def create(self, validated_data):
         content = validated_data.get('content')
@@ -16,7 +17,8 @@ class PostListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ['content', 'user', 'likes']
+        fields = ['id', 'content', 'user', 'likes']
+        read_only_field = ['id']
 
     def post_author(self, post):
         user = post.user.email
@@ -33,7 +35,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ['content', 'liked_by', 'likes', 'user']
+        fields = ['id', 'content', 'liked_by', 'likes', 'user']
+        read_only_field = ['id']
 
     def post_author(self, post):
         user = post.user.email
@@ -49,4 +52,4 @@ class PostDetailSerializer(serializers.ModelSerializer):
 class PostUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['content']
+        fields = ['id', 'content']
