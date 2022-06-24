@@ -1,4 +1,5 @@
 from .utils import Utils
+from decouple import config
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .tasks import geolocate_ip, check_for_holiday
@@ -16,14 +17,14 @@ class RegisterSerializer(serializers.Serializer):
         password = validated_data.pop('password')
         email = validated_data.get('email')
         print(email)
-        validate_email, status = utils.email_validator('0347644da4b440a5b20791fa6a1da3a9', email)
+        validate_email, status = utils.email_validator(config('EMAIL_VALIDATE_API_KEY'), email)
         # Checking the status alone is not enough because invalid email also returns 200
         if status == 200 and validate_email == 'DELIVERABLE':
             user = User.objects.create_user(email=email)
             user.set_password(password)
             user.save()
-            geolocate_ip.delay('2416836c0ec44a3eaa050d734c8fe93d', '102.89.41.43', email)
-            check_for_holiday.delay('e5bd647f01fa43b1b679985fa8ac9664', email)
+            geolocate_ip.delay(config('GEOLOCATE_IP_API_KEY'), '102.89.41.43', email)
+            check_for_holiday.delay(config('CHECK_HOLIDAY_API_KEY'), email)
             return user
         else:
             raise serializers.ValidationError({"error": "This email could not be validated"})

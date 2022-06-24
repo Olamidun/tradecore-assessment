@@ -8,7 +8,7 @@ class TestAuthentication:
         
         Test for successful registration
 
-        GIVEN: A seller enters their first name, last name, email, state of residence, and password correctly
+        GIVEN: A user enters a valid email, and password
         WHEN: The user submits the form
         THEN: They should get a success response of status code 201, A message that says 'You account has been created successfully
 
