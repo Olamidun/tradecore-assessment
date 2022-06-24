@@ -16,7 +16,7 @@ class PostViewSet(viewsets.ViewSet):
     Viewset for Post CRUD
     """
 
-    permission_classes = [CanPerformActionOnPost]
+    permission_classes = [IsAuthenticated | CanPerformActionOnPost]
 
     @swagger_auto_schema(
         operation_description="List out all posts",

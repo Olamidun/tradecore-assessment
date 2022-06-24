@@ -1,4 +1,5 @@
 from rest_framework import status
+from .docs import user_response_examples
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
@@ -14,7 +15,7 @@ class RegistrationAPIView(APIView):
         request_body=RegisterSerializer,
         operation_description="Get a single post",
         operation_summary="Get post",
-        tags=["posts"],
+        tags=["users"],
     )
     def post(self, request, format=None):
         serializer = RegisterSerializer(data=request.data, context={'request': request})
@@ -32,6 +33,13 @@ class LoginWithEmailView(TokenObtainPairView):
 
 
 """View to get user data"""
+
+@swagger_auto_schema(
+    operation_description="Get user data",
+    operation_summary="user data",
+    tags=["users"],
+    responses=user_response_examples.GET_USER_DATA
+)
 class GetUserDataAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     def get(self, request):

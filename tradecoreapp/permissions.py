@@ -15,5 +15,7 @@ class CanPerformActionOnPost(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if obj.user == request.user:
+            print('Trueeeeeeeeeeeeeeeeee')
             return True
+        print('Trueeeeeeeeeeeeeeeeee')
         return False
