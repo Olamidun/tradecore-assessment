@@ -13,6 +13,44 @@ class TestAuthentication:
         THEN: They should get a success response of status code 201, A message that says 'You account has been created successfully
 
         """
+
+        mocker.patch(
+            "account.utils.Utils.email_validator",
+            return_value={
+                "email": "eric@abstractapi.com",
+                "autocorrect": "",
+                "deliverability": "DELIVERABLE",
+                "quality_score": "0.80",
+                "is_valid_format": {
+                    "value": true,
+                    "text": "TRUE"
+                },
+                "is_free_email": {
+                    "value": false,
+                    "text": "FALSE"
+                },
+                "is_disposable_email": {
+                    "value": false,
+                    "text": "FALSE"
+                },
+                "is_role_email": {
+                    "value": false,
+                    "text": "FALSE"
+                },
+                "is_catchall_email": {
+                    "value": true,
+                    "text": "TRUE"
+                },
+                "is_mx_found": {
+                    "value": true,
+                    "text": "TRUE"
+                },
+                "is_smtp_valid": {
+                    "value": true,
+                    "text": "TRUE"
+                }
+            }
+        )
         data = {
             "email": "ajidi.amin@gmail.com",
             "password": "oyomesiogo"
