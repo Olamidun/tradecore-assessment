@@ -12,7 +12,7 @@ class TestGetPost:
         THEN: They should get a success response of status code 200, and list of posts in json format
         """
 
-        response = client.post('api/v1/post', client, user_token)
+        response = client.get('api/v1/post', client, user_token)
         assert response.status_code == 200
         assert isinstance(response.json(), list) is True
 
@@ -25,7 +25,7 @@ class TestGetPost:
         THEN: They should get a success response of status code 401, and an error message that says "Authentication credentials were not provided
         """
 
-        response = client.post('api/v1/post', client)
+        response = client.get('api/v1/post', client)
         assert response.status_code == 401
         assert response.json()['detail'] == "Authentication credentials were not provided."
 
@@ -38,7 +38,7 @@ class TestGetPost:
         THEN: They should get a success response of status code 401, and an error message that says "Authentication credentials were not provided
         """
 
-        response = client.post('api/v1/post', client, **invalid_user_token)
+        response = client.get('api/v1/post', client, **invalid_user_token)
         assert response.status_code == 401
         assert response.json()["detail"] == "Given token not valid for any token type"
         assert response.json()["code"] == "token_not_valid"
@@ -54,7 +54,7 @@ class TestGetPost:
         THEN: They should get a success response of status code 200, and list of posts in json format
         """
 
-        response = client.post('api/v1/post/list_post_for_user', client, user_token)
+        response = client.get('api/v1/post/list_post_for_user', client, user_token)
         assert response.status_code == 200
         assert isinstance(response.json(), list) is True
 
@@ -68,7 +68,7 @@ class TestGetPost:
         THEN: They should get a success response of status code 401, and an error message that says "Authentication credentials were not provided
         """
 
-        response = client.post('api/v1/post/list_post_for_user', client)
+        response = client.get('api/v1/post/list_post_for_user', client)
         assert response.status_code == 401
         assert response.json()['detail'] == "Authentication credentials were not provided."
 
@@ -82,7 +82,7 @@ class TestGetPost:
         THEN: They should get a success response of status code 401.
         """
 
-        response = client.post('api/v1/post/list_post_for_user', client, **invalid_user_token)
+        response = client.get('api/v1/post/list_post_for_user', client, **invalid_user_token)
         assert response.status_code == 401
         assert response.json()["detail"] == "Given token not valid for any token type"
         assert response.json()["code"] == "token_not_valid"
@@ -99,7 +99,7 @@ class TestGetPost:
 
         post = Post.objects.create(content="a single post")
 
-        response = client.post(f'api/v1/post/{post.id}', client, **user_token)
+        response = client.get(f'api/v1/post/{post.id}', client, **user_token)
         assert response.status_code == 200
 
     def test_retrieve_single_post_unsuccessful_invalid_token(self, client, **invalid_user_token):
@@ -113,7 +113,7 @@ class TestGetPost:
 
         post = Post.objects.create(content="a single post")
 
-        response = client.post(f'api/v1/post/{post.id}', client, **invalid_user_token)
+        response = client.get(f'api/v1/post/{post.id}', client, **invalid_user_token)
         assert response.status_code == 401
         assert response.json()["detail"] == "Given token not valid for any token type"
         assert response.json()["code"] == "token_not_valid"
@@ -131,7 +131,7 @@ class TestGetPost:
 
         post = Post.objects.create(content="a single post")
 
-        response = client.post(f'api/v1/post/{post.id}', client)
+        response = client.get(f'api/v1/post/{post.id}', client)
         assert response.status_code == 401
         assert response.json()["detail"] == "Given token not valid for any token type"
         assert response.json()["code"] == "token_not_valid"
